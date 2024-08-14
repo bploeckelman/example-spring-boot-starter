@@ -1,0 +1,2 @@
+# TODO: this doesn't seem to be working, no log message in example app
+org.springframework.context.ApplicationListener=com.example.starter.ExampleListener

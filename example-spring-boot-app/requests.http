@@ -1,0 +1,4 @@
+### GET request to example app
+GET localhost:8080/example
+
+###

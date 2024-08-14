@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>example-spring-boot</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>example-spring-boot-starter</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+
+    <name>Example Spring Boot Starter</name>
+    <description>Example code for a simple custom Spring Boot starter library</description>
+
+    <properties>
+        <java.version>21</java.version>
+
+        <!-- TODO: review if this is needed  -->
+        <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
+    </properties>
+
+    <!-- Use the Spring Boot BOM to manage dependencies rather than explicitly using the spring-boot-starter-parent -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!--
+         |  Reference the core Spring Boot starter directly, this is required unless the custom starter
+         |  relies on a different Spring Boot starter: spring-boot-starter-data-jpa, spring-boot-starter-web, etc...
+         +-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <!--
+         |  Generate a custom configuration metadata file from items annotated with @ConfigurationProperties
+         |  to enable IDE assistance for custom properties provided by this starter.
+         |  https://docs.spring.io/spring-boot/specification/configuration-metadata/annotation-processor.html
+         +-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- NOTE: this seems like it causes a problem for an app using the custom starter -->
+                <configuration>
+                    <excludes>
+                        <!--
+                         |  Prevent spring-boot-maven-plugin's 'repackage' goal from adding auto-configurations
+                         |  the autoconfigure-processor dependency into the uber jar for the custom starter.
+                         |  TODO: may be able to be managed by a maven property: spring-boot.repackage.skip, need to test
+                         +-->
+                        <exclude>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-autoconfigure-processor</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: example-spring-boot-app
+
+# NOTE: not specifying this property means that the message falls back to the library-provided default
+example:
+  message: Hello from the example app using the example starter library!
